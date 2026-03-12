@@ -1,0 +1,66 @@
+topic: ~Greetings()
+language: enu
+
+# 1. Introduction
+u:(["Today we will start our journey into Artificial Intelligence" "journey into Artificial Intelligence"])
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/intro.jpg"))
+    ^run(animations/Stand/Gestures/Hey_1) Hello everyone. I am Pepper, your AI Teaching Assistant. \pau=500\ 
+    \RSPD=90\ Don’t worry… I won’t replace your professor. \pau=500\  Yet. \pau=1000\ 
+    Artificial Intelligence is the simulation of human intelligence by machines.
+
+# 2. What is AI?
+u:(["Artificial Intelligence allows machines to think learn and make decisions"])
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/WhatIsAI.jpg"))
+    \RSPD=90\ Technically speaking,\pau=700\ AI systems use algorithms and data to detect patterns and improve their performance over time.
+
+# 3. Daily Life Example
+u:(["Can you give us a daily life example"])
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/assistant.jpg"))
+    \RSPD=90\ Yes, of course.\pau=700\ You are already interacting with Artificial Intelligence every day. \pau=400\ 
+    Examples include technologies such as voice assistants \pau=400\ as you see on my tablet.
+
+# 4. How does AI learn?
+u:(["Artificial intelligence learns from data"])
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/panic.jpg"))
+    \RSPD=90\ Just like students learn from practice… \pau=500\ and sometimes panic before finals. \pau=500\ 
+    Step 1: Feed data to the system. \pau=400\ 
+    Step 2: The system detects patterns in the data. \pau=400\ 
+    Step 3: The system improves its predictions. \pau=500\ 
+    Example: If I see 10000 pictures of cats… eventually I stop calling them dogs. ^run(animations/Stand/Emotions/Positive/Laugh_3)
+
+# 5. Mind Reading
+u:(["Can Artificial Intelligence read our thoughts"])
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/mind.jpg"))
+    \RSPD=90\  No. Relax. \pau=1000\ 
+    Artificial Intelligence systems can detect faces, analyze voice tone, and observe behavioral patterns. \pau=400\ 
+    However, they do not understand humans in the same way other humans do. \pau=400\ 
+    For example, \pau=400\  I can recognize faces. In fact… \pau=400\  I recognize Dr. Maria.
+
+# 6. Fear of AI
+u:(["Some people fear Artificial Intelligence"])
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/scare.jpg"))
+    \RSPD=90\ Should you be afraid of me? \pau=500\ 
+    Artificial Intelligence can help doctors, improve education, and optimize traffic systems. \pau=400\ 
+    However, there are also risks. \pau=500\ 
+    But I promise I only take jobs on weekends. ^run(animations/Stand/Emotions/Positive/Laugh_3)
+
+# 7. Lebanon Example (The Joke)
+u:(["example of Artificial Intelligence used in Lebanon"])
+    \RSPD=90\ Of course. 
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/lebanon.jpg"))
+    ^run(animations/Stand/Emotions/Positive/Laugh_2) Just kidding.
+
+# 8. Lebanon Example (The Real One)
+u:(["Pepper"]) 
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/example.jpg"))
+    \RSPD=90\ Although I appear to be on vacation, AI in Lebanon has transformed multiple sectors. \pau=400\ 
+    AI can help improve medical diagnostics, support smart agriculture, and optimize tourism experiences. \pau=500\ 
+    And maybe even recommend the best shawwarma in the country. ^run(animations/Stand/Gestures/Whisper_1) \pau=1000\ 
+    
+    ^pCall(ALTabletService.showImage("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/conclusion.jpg"))
+    \pau=400\ Conclusion time. \pau=400\ 
+    Artificial Intelligence is not magic. ^run(animations/Stand/Gestures/No_3) It is mathematics, data, and algorithms working together.
+
+# 9. Final Sign Off
+u:(["Pepper are you ready to take some questions"])
+    \RSPD=90\ I am ready. \pau=400\ 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?><ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3"><Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0"><bitmap>media/images/box/root.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Timeline enable="0"><BehaviorLayer name="behavior_layer1"><BehaviorKeyframe name="keyframe1" index="1"><Diagram><Box name="Python Script" id="1" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="227" y="119"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import socket
+import threading
+import time
+import StringIO
+from PIL import Image
+from naoqi import ALProxy
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        self.port = 12344      # Commands port
+        self.video_port = 12348 # Video port
+        self.mac_ip = "10.10.42.108"
+        self.sock = None
+        self.is_running = False
+
+    def onLoad(self):
+        self.logger.info("Box loaded")
+
+    def onUnload(self):
+        self.is_running = False
+        if self.sock:
+            try:
+                self.sock.shutdown(socket.SHUT_RDWR)
+                self.sock.close()
+            except: pass
+
+    def onInput_onStart(self):
+        self.is_running = True
+        try:
+            self.motion = ALProxy("ALMotion")
+            self.tts = ALProxy("ALTextToSpeech")
+            self.posture = ALProxy("ALRobotPosture")
+            self.memory = ALProxy("ALMemory")
+            self.video_service = ALProxy("ALVideoDevice")
+
+            # 1. Start Command Server Socket
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.sock.bind(("0.0.0.0", self.port))
+            self.sock.listen(5)
+            self.sock.settimeout(1.0)
+
+            # 2. Start Command Loop Thread
+            self.cmd_worker = threading.Thread(target=self.receive_loop)
+            self.cmd_worker.daemon = True
+            self.cmd_worker.start()
+
+            # 3. Start Video Stream Thread
+            self.video_worker = threading.Thread(target=self.stream_camera_loop)
+            self.video_worker.daemon = True
+            self.video_worker.start()
+
+            self.logger.info("Dual Systems Active: Cmds on " + str(self.port) + ", Video to " + self.mac_ip)
+        except Exception as e:
+            self.logger.error("Startup Failure: " + str(e))
+
+    # --- NEW: VIDEO STREAMING THREAD ---
+    def stream_camera_loop(self):
+        video_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        video_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
+        try:
+            video_sock.connect((self.mac_ip, self.video_port))
+            # Res 1 = 320x240 (Best for 30FPS), Color 11 = RGB
+            sub_id = self.video_service.subscribeCamera("FastStream_" + str(int(time.time())), 0, 2, 11, 20)
+
+            while self.is_running:
+                al_image = self.video_service.getImageRemote(sub_id)
+                if al_image:
+                    width, height = al_image[0], al_image[1]
+                    raw_bytes = al_image[6]
+
+                    # Compression Logic
+                    img = Image.frombytes("RGB", (width, height), raw_bytes)
+                    buf = StringIO.StringIO()
+                    img.save(buf, format="JPEG", quality=50)
+                    jpeg_data = buf.getvalue()
+
+                    # Send Size + Data
+                    video_sock.sendall(str(len(jpeg_data)).ljust(16))
+                    video_sock.sendall(jpeg_data)
+
+                time.sleep(0.01) # Keep CPU usage sane
+
+        except Exception as e:
+            self.logger.error("Video Stream Error: " + str(e))
+        finally:
+            try: self.video_service.unsubscribe(sub_id)
+            except: pass
+            video_sock.close()
+
+    # --- COMMAND RECEIVE LOOP (Modified to stay alive) ---
+    def receive_loop(self):
+        while self.is_running:
+            try:
+                conn, addr = self.sock.accept()
+                data = conn.recv(4096)
+                if data:
+                    msg = data.decode('utf-8', 'ignore')
+                    self.process_command(msg)
+                conn.close()
+            except socket.timeout:
+                continue
+            except Exception as e:
+                self.logger.error("Cmd Loop Error: " + str(e))
+            time.sleep(0.1)
+
+    # --- COMMAND PROCESSING (Your existing logic) ---
+    def process_command(self, msg):
+        self.motion.stopMove()
+        if msg == "stop":
+            self.tts.post.say("Stopping immediately.")
+            return
+
+        elif "move_" in msg:
+            try:
+                parts = msg.split('_')
+                direction, val = parts[1], float(parts[2])
+                x, y = 0, 0
+                if direction == "forward": x = val
+                elif direction == "backward": x = -val
+                elif direction == "left": y = val
+                elif direction == "right": y = -val
+                self.tts.post.say("Moving " + str(direction))
+                self.motion.post.moveTo(x, y, 0)
+            except Exception as e: self.logger.error("Move Error: " + str(e))
+
+        elif "high_five" in msg:
+            self.tts.post.say("High five! Slap my hand!")
+            self.motion.setExternalCollisionProtectionEnabled("All", False)
+            names = ["RShoulderPitch", "RShoulderRoll", "RElbowRoll", "RWristYaw", "RHand"]
+            angles = [-1.1, -0.6, 0.7, -1.0, 1.0]
+            self.motion.post.setAngles(names, angles, 0.2)
+            threading.Thread(target=self.wait_for_touch).start()
+
+        else:
+            self.tts.post.say(str(msg.encode('utf-8')))
+
+    def wait_for_touch(self):
+        touched = False
+        start_time = time.time()
+        while not touched and (time.time() - start_time < 10.0) and self.is_running:
+            if self.memory.getData("HandRightBackTouched") > 0.5 or self.memory.getData("HandRightLeftTouched") > 0.5:
+                touched = True
+            time.sleep(0.1)
+        if touched:
+            self.tts.post.say("Nice one!")
+            self.motion.closeHand("RHand")
+            time.sleep(0.7)
+        self.posture.goToPosture("Stand", 0.5)
+        self.motion.setExternalCollisionProtectionEnabled("All", True)
+
+    def onInput_onStop(self):
+        self.is_running = False
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" /><Link inputowner="0" indexofinput="4" outputowner="1" indexofoutput="4" /></Diagram></BehaviorKeyframe></BehaviorLayer></Timeline></Box></ChoregrapheProject>
