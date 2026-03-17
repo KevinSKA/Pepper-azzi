@@ -1,0 +1,395 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pop Quiz</title>
+    <script src="/libs/qimessaging/2/qimessaging.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        color: #fff;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #waitingScreen {
+        text-align: center;
+      }
+
+      #waitingScreen h1 {
+        font-size: 52px;
+        margin-bottom: 16px;
+        color: #e0e0ff;
+      }
+
+      #waitingScreen p {
+        font-size: 28px;
+        color: #a0a0cc;
+      }
+
+      #quizContainer {
+        display: none;
+        width: 90%;
+        max-width: 960px;
+        text-align: center;
+      }
+
+      #questionBadge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.12);
+        padding: 8px 28px;
+        border-radius: 20px;
+        font-size: 22px;
+        letter-spacing: 1px;
+        margin-bottom: 18px;
+        color: #c0c0ff;
+      }
+
+      #questionText {
+        font-size: 38px;
+        font-weight: bold;
+        line-height: 1.3;
+        margin-bottom: 36px;
+        color: #ffffff;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .answers-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .answer-btn {
+        width: 100%;
+        max-width: 720px;
+        padding: 22px 32px;
+        font-size: 28px;
+        font-weight: 600;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .answer-btn:active {
+        transform: scale(0.97);
+      }
+
+      .answer-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .answer-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        font-size: 22px;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .answer-btn.correct {
+        background: rgba(46, 204, 113, 0.35) !important;
+        border-color: #2ecc71 !important;
+        box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+      }
+
+      .answer-btn.correct .answer-label {
+        background: #2ecc71;
+      }
+
+      .answer-btn.wrong {
+        background: rgba(231, 76, 60, 0.35) !important;
+        border-color: #e74c3c !important;
+        box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
+      }
+
+      .answer-btn.wrong .answer-label {
+        background: #e74c3c;
+      }
+
+      .answer-btn.dimmed {
+        opacity: 0.35;
+      }
+
+      #feedbackBanner {
+        display: none;
+        margin-top: 24px;
+        padding: 14px 36px;
+        border-radius: 14px;
+        font-size: 30px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      #feedbackBanner.correct-banner {
+        background: rgba(46, 204, 113, 0.25);
+        border: 2px solid #2ecc71;
+        color: #2ecc71;
+      }
+
+      #feedbackBanner.wrong-banner {
+        background: rgba(231, 76, 60, 0.25);
+        border: 2px solid #e74c3c;
+        color: #e74c3c;
+      }
+
+      #scoreScreen {
+        display: none;
+        text-align: center;
+      }
+
+      #scoreScreen h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      #scoreValue {
+        font-size: 80px;
+        font-weight: bold;
+        color: #2ecc71;
+        margin-bottom: 12px;
+      }
+
+      #scoreMessage {
+        font-size: 28px;
+        color: #a0a0cc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="waitingScreen">
+      <h1>Pop Quiz!</h1>
+      <p>Get ready...</p>
+    </div>
+
+    <div id="quizContainer">
+      <div id="questionBadge">Question 1 / 5</div>
+      <div id="questionText"></div>
+      <div class="answers-grid" id="answersGrid"></div>
+      <div id="feedbackBanner"></div>
+    </div>
+
+    <div id="scoreScreen">
+      <h1>Quiz Complete!</h1>
+      <div id="scoreValue"></div>
+      <div id="scoreMessage"></div>
+    </div>
+
+    <script>
+      // ─────────────────────────────────────────────
+      //  PEPPER TABLET BRIDGE using QiSession
+      //  THIS is what sends touch events back to
+      //  the Python script via ALMemory
+      // ─────────────────────────────────────────────
+      var memory = null;
+
+      try {
+        var session = new QiSession();
+        session.service("ALMemory").then(
+          function (m) {
+            memory = m;
+            console.log("QiSession connected, ALMemory ready");
+          },
+          function (err) {
+            console.log("ALMemory service failed: " + err);
+          },
+        );
+      } catch (e) {
+        console.log("QiSession not available: " + e);
+      }
+
+      function raiseEvent(name, value) {
+        if (memory) {
+          try {
+            memory.raiseEvent(name, String(value));
+            console.log("Event raised: " + name + " = " + value);
+          } catch (e) {
+            console.log("raiseEvent failed: " + e);
+          }
+        } else {
+          console.log("No memory service - Event: " + name + " = " + value);
+        }
+      }
+
+      // ─────────────────────────────────────────────
+      //  QUESTIONS
+      // ─────────────────────────────────────────────
+      var questions = [
+        {
+          q: "What does the 'AI' in Artificial Intelligence stand for?",
+          choices: [
+            "Automated Interface",
+            "Artificial Intelligence",
+            "Advanced Integration",
+          ],
+          correct: 1,
+        },
+        {
+          q: "Which of these is a type of machine learning where the model learns from labeled data?",
+          choices: [
+            "Supervised Learning",
+            "Unsupervised Learning",
+            "Reinforcement Learning",
+          ],
+          correct: 0,
+        },
+        {
+          q: "What is the primary 'fuel' used to train modern AI models?",
+          choices: ["Electricity", "Data", "Source Code"],
+          correct: 1,
+        },
+        {
+          q: "Which AI technology is specifically designed to understand and generate human language?",
+          choices: [
+            "Computer Vision",
+            "Robotics",
+            "Natural Language Processing (NLP)",
+          ],
+          correct: 2,
+        },
+        {
+          q: "What is the name of the test used to determine if a machine can demonstrate human-like intelligence?",
+          choices: ["The Turing Test", "The Newton Exam", "The Binary Check"],
+          correct: 0,
+        },
+      ];
+
+      var currentQ = 0;
+      var score = 0;
+      var answered = false;
+      var LABELS = ["A", "B", "C"];
+
+      // Called from Choregraphe Python script
+      function showQuestion(index) {
+        if (index !== undefined && index !== null) {
+          currentQ = parseInt(index);
+        }
+        loadQuestion();
+      }
+
+      function showScore() {
+        displayScore();
+      }
+
+      function selectAnswer(choiceIndex) {
+        if (!answered) {
+          handleAnswer(parseInt(choiceIndex));
+        }
+      }
+
+      function loadQuestion() {
+        answered = false;
+        var q = questions[currentQ];
+
+        document.getElementById("waitingScreen").style.display = "none";
+        document.getElementById("scoreScreen").style.display = "none";
+        document.getElementById("quizContainer").style.display = "block";
+        document.getElementById("feedbackBanner").style.display = "none";
+
+        document.getElementById("questionBadge").textContent =
+          "Question " + (currentQ + 1) + " / " + questions.length;
+        document.getElementById("questionText").textContent = q.q;
+
+        var grid = document.getElementById("answersGrid");
+        grid.innerHTML = "";
+
+        for (var i = 0; i < q.choices.length; i++) {
+          var btn = document.createElement("button");
+          btn.className = "answer-btn";
+          btn.setAttribute("data-index", i);
+          btn.innerHTML =
+            '<span class="answer-label">' +
+            LABELS[i] +
+            "</span>" +
+            "<span>" +
+            q.choices[i] +
+            "</span>";
+          btn.onclick = (function (idx) {
+            return function () {
+              if (!answered) handleAnswer(idx);
+            };
+          })(i);
+          grid.appendChild(btn);
+        }
+
+        raiseEvent("PepperQuiz/QuestionDisplayed", String(currentQ));
+      }
+
+      function handleAnswer(chosenIndex) {
+        answered = true;
+        var q = questions[currentQ];
+        var btns = document.querySelectorAll(".answer-btn");
+        var isCorrect = chosenIndex === q.correct;
+
+        for (var i = 0; i < btns.length; i++) {
+          var idx = parseInt(btns[i].getAttribute("data-index"));
+          if (idx === q.correct) {
+            btns[i].classList.add("correct");
+          } else if (idx === chosenIndex && !isCorrect) {
+            btns[i].classList.add("wrong");
+          } else {
+            btns[i].classList.add("dimmed");
+          }
+        }
+
+        var banner = document.getElementById("feedbackBanner");
+        banner.style.display = "inline-block";
+        if (isCorrect) {
+          score++;
+          banner.className = "correct-banner";
+          banner.textContent = "Correct!";
+        } else {
+          banner.className = "wrong-banner";
+          banner.textContent = "The answer was: " + q.choices[q.correct];
+        }
+
+        raiseEvent("PepperQuiz/AnswerResult", isCorrect ? "correct" : "wrong");
+        raiseEvent("PepperQuiz/AnswerChosen", String(chosenIndex));
+      }
+
+      function displayScore() {
+        document.getElementById("quizContainer").style.display = "none";
+        document.getElementById("scoreScreen").style.display = "block";
+
+        var pct = Math.round((score / questions.length) * 100);
+        document.getElementById("scoreValue").textContent =
+          score + " / " + questions.length;
+
+        var msg = "";
+        if (pct === 100) msg = "Perfect score! Amazing!";
+        else if (pct >= 70) msg = "Great job!";
+        else if (pct >= 40) msg = "Not bad, keep learning!";
+        else msg = "Let's study more and try again!";
+        document.getElementById("scoreMessage").textContent = msg;
+
+        raiseEvent("PepperQuiz/QuizFinished", String(score));
+      }
+    </script>
+  </body>
+</html>

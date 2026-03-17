@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?><ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3"><Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0"><bitmap>media/images/box/root.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Timeline enable="0"><BehaviorLayer name="behavior_layer1"><BehaviorKeyframe name="keyframe1" index="1"><Diagram><Box name="quiz" id="1" localization="8" tooltip="" x="652" y="149"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.questions = [
+            {
+                "q": "What does the 'AI' in Artificial Intelligence stand for?",
+                "choices": ["Automated Interface", "Artificial Intelligence", "Advanced Integration"],
+                "correct": 1
+            },
+            {
+                "q": "Which of these is a type of machine learning where the model learns from labeled data?",
+                "choices": ["Supervised Learning", "Unsupervised Learning", "Reinforcement Learning"],
+                "correct": 0
+            },
+            {
+                "q": "What is the primary 'fuel' used to train modern AI models?",
+                "choices": ["Electricity", "Data", "Source Code"],
+                "correct": 1
+            },
+            {
+                "q": "Which AI technology is specifically designed to understand and generate human language?",
+                "choices": ["Computer Vision", "Robotics", "Natural Language Processing (NLP)"],
+                "correct": 2
+            },
+            {
+                "q": "What is the name of the test used to determine if a machine can demonstrate human-like intelligence?",
+                "choices": ["The Turing Test", "The Newton Exam", "The Binary Check"],
+                "correct": 0
+            },
+        ]
+
+        self.current_q = 0
+        self.score = 0
+        self.waiting_for_answer = False
+
+    def onLoad(self):
+        self.tablet = None
+        self.tts = None
+        self.memory = None
+        self.speech_reco = None
+        self.subscriber_touch = None
+        self.subscriber_voice = None
+
+    def onUnload(self):
+        self.cleanup()
+
+    def cleanup(self):
+        try:
+            if self.subscriber_touch:
+                self.subscriber_touch.signal.disconnect(self.on_touch_answer)
+        except:
+            pass
+        try:
+            if self.subscriber_voice:
+                self.subscriber_voice.signal.disconnect(self.on_voice_answer)
+        except:
+            pass
+        try:
+            if self.speech_reco:
+                self.speech_reco.unsubscribe("PepperQuiz")
+        except:
+            pass
+        try:
+            if self.tablet:
+                self.tablet.hideWebview()
+        except:
+            pass
+
+    def onInput_onStart(self):
+        import time
+
+        session = self.session()
+
+        # ── Get services ──
+        self.tts = session.service("ALTextToSpeech")
+        self.memory = session.service("ALMemory")
+        self.tablet = session.service("ALTabletService")
+        self.speech_reco = session.service("ALSpeechRecognition")
+
+        # ── Disable autonomous life features that steal the mic ──
+        try:
+            auto_life = session.service("ALAutonomousLife")
+            auto_life.setAutonomousAbilityEnabled("SpeakingMovement", False)
+            auto_life.setAutonomousAbilityEnabled("BasicAwareness", False)
+            self.logger.info(">>> Autonomous abilities disabled")
+        except Exception as e:
+            self.logger.warning(">>> Could not disable autonomous life: " + str(e))
+
+        # ── Speech recognition: full cleanup first ──
+        try:
+            self.speech_reco.unsubscribe("PepperQuiz")
+        except:
+            pass
+        try:
+            self.speech_reco.pause(True)
+        except:
+            pass
+        time.sleep(0.5)
+
+        try:
+            self.speech_reco.setLanguage("English")
+            vocab = ["A", "B", "C", "letter A", "letter B", "letter C"]
+            self.speech_reco.setVocabulary(vocab, False)
+            self.speech_reco.pause(False)
+            self.logger.info(">>> Speech recognition set up OK")
+        except Exception as e:
+            self.logger.error(">>> Speech recognition FAILED: " + str(e))
+
+        # ── Subscribe to tablet touch events ──
+        self.subscriber_touch = self.memory.subscriber("PepperQuiz/AnswerChosen")
+        self.subscriber_touch.signal.connect(self.on_touch_answer)
+        self.logger.info(">>> Touch subscriber connected")
+
+        # ── Subscribe to voice recognition ──
+        # FIX: Added .signal.connect() — this was missing before!
+        self.subscriber_voice = self.memory.subscriber("WordRecognized")
+        self.subscriber_voice.signal.connect(self.on_voice_answer)
+        self.speech_reco.subscribe("PepperQuiz")
+        self.logger.info(">>> Voice subscriber connected")
+
+        # ── Load the quiz page on tablet ──
+        try:
+            url = "http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/quiz.html"
+            self.logger.info(">>> Loading URL: " + url)
+            self.tablet.showWebview(url)
+            self.logger.info(">>> showWebview called OK")
+        except Exception as e:
+            self.logger.error(">>> Tablet FAILED: " + str(e))
+
+        time.sleep(3)
+
+        # ── Introduce the quiz ──
+        self.tts.say("Welcome to the Pop Quiz! Let's see how much you know.")
+        time.sleep(0.5)
+
+        # ── Start first question ──
+        self.current_q = 0
+        self.score = 0
+        self.ask_question()
+
+    def ask_question(self):
+        import time
+
+        if self.current_q >= len(self.questions):
+            self.finish_quiz()
+            return
+
+        q = self.questions[self.current_q]
+
+        try:
+            js_cmd = "showQuestion(%d);" % self.current_q
+            self.tablet.executeJS(js_cmd)
+            self.logger.info(">>> Executed JS: " + js_cmd)
+        except Exception as e:
+            self.logger.error(">>> executeJS FAILED: " + str(e))
+
+        time.sleep(0.5)
+
+        self.tts.say("Question %d." % (self.current_q + 1))
+        self.tts.say(q["q"])
+
+        labels = ["A", "B", "C"]
+        for i, choice in enumerate(q["choices"]):
+            self.tts.say("%s: %s" % (labels[i], choice))
+
+        self.tts.say("What's your answer? Say A, B, or C, or tap the screen!")
+
+        # Resume speech recognition after TTS finishes
+        time.sleep(0.5)
+        try:
+            self.speech_reco.pause(False)
+        except:
+            pass
+
+        self.waiting_for_answer = True
+        self.logger.info(">>> Waiting for answer to question %d" % (self.current_q + 1))
+
+    def on_touch_answer(self, value):
+        self.logger.info(">>> TOUCH received: " + str(value))
+        if not self.waiting_for_answer:
+            return
+        self.waiting_for_answer = False
+
+        try:
+            chosen = int(value)
+        except:
+            return
+
+        self.process_answer(chosen)
+
+    def on_voice_answer(self, value):
+        self.logger.info(">>> VOICE received: " + str(value))
+        if not self.waiting_for_answer:
+            return
+
+        word = value[0]
+        confidence = value[1]
+
+        if confidence < 0.35:
+            self.logger.info(">>> Confidence too low: " + str(confidence))
+            return
+
+        mapping = {
+            "A": 0, "letter A": 0,
+            "B": 1, "letter B": 1,
+            "C": 2, "letter C": 2,
+        }
+
+        if word in mapping:
+            self.waiting_for_answer = False
+            chosen = mapping[word]
+            self.logger.info(">>> Voice answer accepted: " + word + " -> " + str(chosen))
+
+            try:
+                self.tablet.executeJS("selectAnswer(%d);" % chosen)
+            except:
+                pass
+
+            self.process_answer(chosen)
+
+    def process_answer(self, chosen):
+        import time
+        import random
+
+        self.logger.info(">>> Processing answer: %d for question %d" % (chosen, self.current_q + 1))
+
+        # STOP listening so Pepper doesn't hear itself
+        self.waiting_for_answer = False
+        try:
+            self.speech_reco.pause(True)
+        except:
+            pass
+        q = self.questions[self.current_q]
+        correct_idx = q["correct"]
+        labels = ["A", "B", "C"]
+
+        if chosen == correct_idx:
+            self.score += 1
+            reactions = [
+                "That's correct! Great job!",
+                "Yes! You got it!",
+                "Exactly right! Well done!",
+                "Correct! You're smart!",
+            ]
+            self.tts.say(random.choice(reactions))
+        else:
+            wrong_reactions = [
+                "Oops, that's not right.",
+                "Not quite!",
+                "Sorry, that's wrong.",
+            ]
+            self.tts.say(random.choice(wrong_reactions))
+            self.tts.say(
+                "The correct answer was %s: %s." % (
+                    labels[correct_idx],
+                    q["choices"][correct_idx]
+                )
+            )
+
+        time.sleep(2)
+
+        self.current_q += 1
+        self.ask_question()
+
+    def finish_quiz(self):
+        import time
+
+        try:
+            self.tablet.executeJS("showScore();")
+        except:
+            pass
+
+        time.sleep(0.5)
+
+        total = len(self.questions)
+        self.tts.say(
+            "Quiz complete! You got %d out of %d correct!" % (self.score, total)
+        )
+
+        pct = (self.score * 100) / total
+        if pct == 100:
+            self.tts.say("Perfect score! You're a genius!")
+        elif pct >= 70:
+            self.tts.say("Great job! You know your stuff!")
+        elif pct >= 40:
+            self.tts.say("Not bad! Keep studying and you'll do even better!")
+        else:
+            self.tts.say("Let's study a bit more and try again. You can do it!")
+
+        self.cleanup()
+        self.onInput_onStop()
+
+    def onInput_onStop(self):
+        self.cleanup()
+        self.onUnload()
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" /><Link inputowner="0" indexofinput="4" outputowner="1" indexofoutput="4" /></Diagram></BehaviorKeyframe></BehaviorLayer></Timeline></Box></ChoregrapheProject>
