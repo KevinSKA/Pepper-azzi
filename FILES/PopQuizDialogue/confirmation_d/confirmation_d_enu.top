@@ -1,0 +1,30 @@
+topic: ~confirmation_d()
+language: enu
+include: lexicon_enu.top
+
+# Question 1
+proposal: %q1Correct ~joyful That is correct!
+    AI stands for Artificial Intelligence. Well done!
+proposal: %q1WrongA ~neutral That is not correct.
+    Automated Intelligence is not right. The correct answer is Artificial Intelligence.
+proposal: %q1WrongC ~neutral That is not correct.
+    Advanced Integration is not right. The correct answer is Artificial Intelligence.
+
+# Question 2
+proposal: %q2Correct ~joyful That is correct!
+    CPU stands for Central Processing Unit. Well done! $userAnswer=1 $onStopped=1
+proposal: %q2WrongB ~neutral That is not correct.
+    Computer Personal Utility is not right. The correct answer is Central Processing Unit. $userAnswer=1 $onStopped=1
+proposal: %q2WrongC ~neutral That is not correct.
+    Central Program Unifier is not right. The correct answer is Central Processing Unit. $userAnswer=1 $onStopped=1
+
+# Question 1 events (screen)
+u:(e:answerA) ^gotoReactivate(q1WrongA)
+u:(e:answerB) ^gotoReactivate(q1Correct)
+u:(e:answerC) ^gotoReactivate(q1WrongC)
+
+# Question 2 events (screen)
+u:(e:answer2A) ^gotoReactivate(q2Correct)
+u:(e:answer2B) ^gotoReactivate(q2WrongB)
+u:(e:answer2C) ^gotoReactivate(q2WrongC)
+

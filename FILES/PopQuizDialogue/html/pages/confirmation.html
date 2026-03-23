@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Interact with Pepper</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../css/w3.css">
+        <link rel="stylesheet" type="text/css" href="../css/formatting.css">
+        <link rel="stylesheet" href="../css/all.css">
+
+        <script src="/libs/qi/2/qi.js"></script>
+        <script src="../js/jquery.js"></script>
+        <script src="../js/qievents.js"></script>
+        <script src="../js/displayinfo.js"></script>
+    </head>
+    
+    <body>
+        <!-- Navbar -->
+        <div class="w3-top">
+            <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+                <!-- a href="../index.html" class="w3-bar-item w3-button">WELCOME</a -->
+                <!-- Right-sided navbar links. Hide them on small screens -->
+                <div class="w3-right w3-hide-small">
+                    <a href="../index.html" class="w3-bar-item w3-button">HOME</a>
+                </div>
+            </div>
+        </div>
+        <!-- Page content -->
+        <div class="w3-content" style="max-width:800px">
+            <div class="w3-row w3-padding-64" id="riddle">
+                <div class="w3-padding-large">
+                    <div id="informationSection" class="w3-center">
+                        <hr />
+                        <h1 id="pageHeading" style="font-size: 45px;padding-top:50px"></h1>
+                        <hr />
+                        <h3 id="pageText"></h3>
+                    </div>
+                    <hr />
+                    <div class="w3-center">
+                        <button type="button" id="optionA" onclick="selectAnswer('A')" class="fa rate-button rounded-rect-btn brown-btn" style="font-size:30px;margin-bottom: 15pt;width:80%;">
+                            <span class="default-font" id="optionAText">A)</span>
+                        </button>
+                        <br>
+                        <button type="button" id="optionB" onclick="selectAnswer('B')" class="fa rate-button rounded-rect-btn brown-btn" style="font-size:30px;margin-bottom: 15pt;width:80%;">
+                            <span class="default-font" id="optionBText">B)</span>
+                        </button>
+                        <br>
+                        <button type="button" id="optionC" onclick="selectAnswer('C')" class="fa rate-button rounded-rect-btn brown-btn" style="font-size:30px;width:80%;">
+                            <span class="default-font" id="optionCText">C)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </div>
+        <!-- Footer -->
+        <footer class="w3-center w3-light-grey w3-padding-32">
+            <p>Powered by <a href="https://www.softbankrobotics.com/emea/en" title="PEPPER" target="_blank" class="w3-hover-text-green">PEPPER</a></p>
+        </footer>
+    </body>
+    <script type="text/javascript">
+        var questions = [
+            {
+                heading: "Question 1",
+                text: "What does AI stand for?",
+                options: ["A) Automated Intelligence", "B) Artificial Intelligence", "C) Advanced Integration"],
+                correct: "B",
+                eventPrefix: "answer"
+            },
+            {
+                heading: "Question 2",
+                text: "What does CPU stand for?",
+                options: ["A) Central Processing Unit", "B) Computer Personal Utility", "C) Central Program Unifier"],
+                correct: "A",
+                eventPrefix: "answer2"
+            }
+        ];
+
+        var currentQuestion = 0;
+        var answered = false;
+        var score = 0;
+
+        function loadQuestion(index) {
+            answered = false;
+            var q = questions[index];
+            document.getElementById("pageHeading").innerHTML = q.heading;
+            document.getElementById("pageText").innerHTML = q.text;
+            document.getElementById("optionAText").innerHTML = q.options[0];
+            document.getElementById("optionBText").innerHTML = q.options[1];
+            document.getElementById("optionCText").innerHTML = q.options[2];
+
+            // Reset button styles completely by replacing with fresh buttons
+            var buttons = ["optionA", "optionB", "optionC"];
+            for (var i = 0; i < buttons.length; i++) {
+                var oldBtn = document.getElementById(buttons[i]);
+                var newBtn = oldBtn.cloneNode(true);
+                newBtn.className = "fa rate-button rounded-rect-btn brown-btn";
+                newBtn.setAttribute("style", "font-size:30px;margin-bottom: 15pt;width:80%;");
+                oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+            }
+            // Re-attach click handlers after replacing buttons
+            document.getElementById("optionA").onclick = function() { selectAnswer('A'); };
+            document.getElementById("optionB").onclick = function() { selectAnswer('B'); };
+            document.getElementById("optionC").onclick = function() { selectAnswer('C'); };
+        }
+
+        function selectAnswer(choice) {
+            if (answered) return;
+            answered = true;
+
+            var q = questions[currentQuestion];
+            var correctId = "option" + q.correct;
+            var selectedId = "option" + choice;
+
+            // Always highlight the correct answer green
+            var correctBtn = document.getElementById(correctId);
+            correctBtn.classList.remove("brown-btn");
+            correctBtn.classList.add("correct-btn");
+
+            // Track score
+            if (choice === q.correct) {
+                score++;
+            } else {
+                // If wrong answer was selected, highlight it red
+                var selectedBtn = document.getElementById(selectedId);
+                selectedBtn.classList.remove("brown-btn");
+                selectedBtn.classList.add("wrong-btn");
+            }
+
+            // Raise event for Pepper (Q1: answerA/B/C, Q2: answer2A/B/C)
+            raiseConfirmationEvent(q.eventPrefix + choice);
+
+            // Move to next question after delay (give Pepper time to speak)
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                setTimeout(function() {
+                    loadQuestion(currentQuestion);
+                }, 5000);
+            } else {
+                // Last question answered — raise score event
+                raiseEvent("quizScore", score);
+            }
+        }
+
+        // Load the first question
+        loadQuestion(0);
+    </script>
+</html>
+
