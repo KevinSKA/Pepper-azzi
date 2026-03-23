@@ -28,3 +28,14 @@ u:(e:answer2A) ^gotoReactivate(q2Correct)
 u:(e:answer2B) ^gotoReactivate(q2WrongB)
 u:(e:answer2C) ^gotoReactivate(q2WrongC)
 
+# Speech recognition for answers
+u:(A) $speechAnswer=A
+u:(option A) $speechAnswer=A
+u:(the first one) $speechAnswer=A
+u:(B) $speechAnswer=B
+u:(option B) $speechAnswer=B
+u:(the second one) $speechAnswer=B
+u:(C) $speechAnswer=C
+u:(option C) $speechAnswer=C
+u:(the third one) $speechAnswer=C
+

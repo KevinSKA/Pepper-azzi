@@ -142,6 +142,23 @@
             }
         }
 
+        // Subscribe to speech answers from dialog system
+        try {
+            QiSession(function(session) {
+                session.service("ALMemory").then(function(mem) {
+                    mem.subscriber("speechAnswer").then(function(sub) {
+                        sub.signal.connect(function(value) {
+                            if (!answered && (value === "A" || value === "B" || value === "C")) {
+                                selectAnswer(value);
+                            }
+                        });
+                    });
+                });
+            });
+        } catch(e) {
+            console.log("Speech subscription not available: " + e);
+        }
+
         // Load the first question
         loadQuestion(0);
     </script>
