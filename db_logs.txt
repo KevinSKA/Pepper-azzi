@@ -1,0 +1,352 @@
+[2026-04-01 18:27:55.029930] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (61)
+[2026-04-01 18:31:31.646011] ✅ SUCCESS: Logged Charbel
+[2026-04-01 18:43:36.958445] ✅ SUCCESS: Logged Charbel
+[2026-04-01 18:43:46.570449] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-01 18:43:57.653597] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-01 18:44:12.394165] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-01 18:44:25.646826] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-01 18:44:39.102786] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-01 19:00:29.001415] ✅ SUCCESS: Logged Joseph
+[2026-04-01 19:00:51.965040] ✅ Q&A SAVED: Joseph asked a question.
+[2026-04-07 12:55:06.975883] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:10:48.671424] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:10:57.690956] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:11:13.424836] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:11:43.340177] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:12:45.691485] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:12:46.348628] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:13:00.673848] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:13:09.828066] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-07 13:27:55.271368] ✅ SUCCESS: Logged Charbel
+[2026-04-07 13:28:05.931881] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 13:28:18.640348] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 13:28:30.769299] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 13:30:04.290269] ✅ SUCCESS: Logged Maria
+[2026-04-07 13:31:01.694347] ✅ SUCCESS: Logged Tatiana
+[2026-04-07 13:31:11.329931] ✅ Q&A SAVED: Tatiana asked a question.
+[2026-04-07 13:32:42.010686] ✅ SUCCESS: Logged Tatyana
+[2026-04-07 13:33:24.360503] ✅ SUCCESS: Logged Tatyana
+[2026-04-07 13:33:38.569043] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-07 13:33:56.415156] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-07 13:34:15.782892] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-07 14:55:18.854310] ✅ SUCCESS: Logged Charbel
+[2026-04-07 14:56:06.614158] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 14:58:16.640219] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 15:25:54.392074] ✅ SUCCESS: Logged Charbel
+[2026-04-07 15:31:21.809369] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 15:54:14.170166] ✅ SUCCESS: Logged Charbel
+[2026-04-07 15:54:22.426966] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 15:54:40.133126] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 15:57:44.378749] ✅ SUCCESS: Logged Charbel
+[2026-04-07 15:57:54.595167] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 15:58:25.031924] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 15:58:45.285199] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-07 15:59:10.190180] ✅ SUCCESS: Logged Tatyana
+[2026-04-07 15:59:40.891642] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-07 16:26:08.836966] ✅ SUCCESS: Logged Maria
+[2026-04-07 16:26:09.809837] ✅ Q&A SAVED: Maria asked a question.
+[2026-04-08 13:48:03.708831] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-08 13:48:16.229398] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-08 13:48:24.581228] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-08 13:48:51.792387] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-08 15:49:03.369767] ✅ SUCCESS: Logged Tatyana
+[2026-04-08 15:49:23.060384] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-08 15:49:32.674499] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-08 15:49:54.875101] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-08 16:03:52.343862] ✅ SUCCESS: Logged Charbel
+[2026-04-08 16:59:15.254001] ✅ SUCCESS: Logged Tatyana
+[2026-04-08 17:29:38.996011] ✅ SUCCESS: Logged Charbel
+[2026-04-08 17:33:47.118867] ✅ SUCCESS: Logged Charbel
+[2026-04-09 14:53:55.327475] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-09 15:04:08.148847] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-09 15:04:18.876527] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-09 15:10:59.387848] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-09 15:11:08.113075] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-09 15:29:08.326803] ✅ SUCCESS: Logged Tatyana
+[2026-04-09 15:29:09.433631] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-09 15:29:24.448091] ✅ Q&A SAVED: Tatyana asked a question.
+[2026-04-09 16:03:41.826558] ✅ SUCCESS: Logged Charbel
+[2026-04-09 16:03:53.774645] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-09 16:04:03.114797] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-09 16:28:31.781249] ✅ SUCCESS: Logged Charbel
+[2026-04-09 16:28:33.133812] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-09 16:28:48.057333] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-09 16:33:29.192154] ✅ SUCCESS: Logged Charbel
+[2026-04-09 16:34:12.840677] ✅ SUCCESS: Logged Kevin
+[2026-04-09 16:34:22.213699] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-14 13:16:48.266421] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-14 13:33:28.649241] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-14 13:33:56.611796] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-14 13:34:28.879732] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-14 13:34:36.384348] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-14 13:38:27.188163] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-14 13:38:34.678331] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-14 14:23:35.922900] ✅ SUCCESS: Logged Charbel
+[2026-04-14 14:23:44.779555] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-14 15:30:15.801374] ✅ SUCCESS: Logged Charbel
+[2026-04-14 15:30:23.639201] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-15 15:08:38.934329] ✅ SUCCESS: Logged Kevin
+[2026-04-15 15:08:54.178929] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-15 15:11:05.565006] ✅ SUCCESS: Logged Charbel
+[2026-04-15 15:11:24.465826] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-15 15:15:32.628829] ✅ SUCCESS: Logged Charbel
+[2026-04-15 15:15:42.150927] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-15 15:18:43.849090] ✅ SUCCESS: Logged Kevin
+[2026-04-15 15:18:44.628214] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-15 15:18:55.719723] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-15 15:46:32.567496] ✅ SUCCESS: Logged Kevin
+[2026-04-15 15:46:33.825286] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-15 15:51:13.856550] ✅ SUCCESS: Logged Kevin
+[2026-04-15 15:51:14.937803] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-15 15:53:35.203517] ✅ SUCCESS: Logged Kevin
+[2026-04-15 15:53:42.005335] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-15 18:03:35.381340] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 18:03:46.986482] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 18:03:56.627462] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 18:04:22.719516] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 18:25:05.234840] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 18:25:12.977195] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:08:06.595221] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:08:17.210524] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:19:24.648133] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:20:37.787559] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:25:01.816785] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:25:39.505676] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:25:49.762976] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:38:35.438789] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-15 19:38:43.675063] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-17 17:22:22.314458] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-17 17:22:29.036426] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-17 17:22:29.037206] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-17 17:35:15.400211] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-17 17:35:22.234589] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-17 17:35:22.235241] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-17 17:38:02.017306] ✅ SUCCESS: Logged Kevin
+[2026-04-17 17:38:16.157233] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:38:33.607467] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:41:53.063499] ✅ SUCCESS: Logged Kevin
+[2026-04-17 17:42:02.670335] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:42:12.932752] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:42:35.427851] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:43:36.640313] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:48:34.808615] ✅ SUCCESS: Logged Kevin
+[2026-04-17 17:48:45.365506] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:48:58.620884] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:49:14.811163] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:49:27.023103] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:49:50.467677] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:50:27.842511] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 17:51:15.614398] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:01:13.729829] ✅ SUCCESS: Logged Kevin
+[2026-04-17 18:01:41.639857] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:01:47.561346] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:02:42.061952] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:07:30.954991] ✅ SUCCESS: Logged Kevin
+[2026-04-17 18:07:47.094571] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:16:32.282962] ✅ SUCCESS: Logged Kevin
+[2026-04-17 18:16:44.076750] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:16:54.404395] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:20:26.496991] ✅ SUCCESS: Logged Kevin
+[2026-04-17 18:20:36.618558] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:24:33.286434] ✅ SUCCESS: Logged Kevin
+[2026-04-17 18:24:41.292797] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:31:17.341757] ✅ SUCCESS: Logged Kevin
+[2026-04-17 18:31:30.917448] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:37:12.138422] ✅ SUCCESS: Logged Kevin
+[2026-04-17 18:37:25.669741] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-17 18:47:44.290003] ✅ SUCCESS: Logged Charbel
+[2026-04-17 18:47:52.269460] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-17 18:59:42.179582] ✅ SUCCESS: Logged Charbel
+[2026-04-17 18:59:53.868731] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-17 19:00:12.469972] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-17 19:00:29.278225] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-22 15:39:57.817513] ✅ SUCCESS: Logged Kevin
+[2026-04-22 15:40:06.788978] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-22 15:43:59.569683] ✅ SUCCESS: Logged Kevin
+[2026-04-22 15:44:09.479954] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-22 15:46:30.276791] ✅ SUCCESS: Logged Kevin
+[2026-04-22 15:46:41.316536] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-22 15:47:26.408564] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-22 15:47:41.183684] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-22 15:48:03.700242] ✅ Q&A SAVED: Kevin asked a question.
+[2026-04-22 16:37:07.490804] ✅ SUCCESS: Logged Charbel
+[2026-04-22 16:37:20.457521] ✅ Q&A SAVED: Charbel asked a question.
+[2026-04-22 16:42:46.683795] ✅ SUCCESS: Logged Joseph
+[2026-04-28 13:17:48.150699] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-28 13:17:57.421915] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-28 13:18:17.649100] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-28 13:20:25.996531] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-28 13:20:36.464730] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-28 13:20:54.251120] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-04-28 13:21:11.766424] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:04:01.115267] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:04:33.007991] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:05:08.796379] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:05:23.028302] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:06:41.150061] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:06:50.803950] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:07:35.644908] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:08:44.575595] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:13:52.209826] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:14:10.745812] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:17:43.867954] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:18:03.045757] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:18:43.645282] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:59:46.833769] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 15:59:59.440072] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 16:00:28.230777] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 16:00:28.231929] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:00:44.432647] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:01:10.222511] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:01:26.949557] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:02:27.555456] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:02:38.129327] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:40:38.202363] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:40:59.473213] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:41:31.682132] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:41:53.123542] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:41:53.125010] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:58:25.929958] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:58:44.621271] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 17:58:44.621978] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 18:16:22.579524] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 18:16:38.710388] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 18:16:38.711119] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-06 18:29:12.814675] ✅ SUCCESS: Logged Kevin
+[2026-05-06 18:29:37.539016] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-06 18:30:10.253523] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-06 18:30:35.292554] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-06 18:34:33.238309] ✅ SUCCESS: Logged Kevin
+[2026-05-06 18:34:44.697798] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-06 18:37:37.051701] ✅ SUCCESS: Logged Kevin
+[2026-05-06 18:38:52.703195] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-06 18:39:33.042769] ✅ SUCCESS: Logged Maria
+[2026-05-06 18:48:33.396010] ✅ SUCCESS: Logged Kevin
+[2026-05-06 18:48:52.004236] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-07 12:12:53.094606] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-07 12:13:05.494999] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-07 12:13:21.823077] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-07 12:13:41.791785] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-07 12:13:41.792835] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-07 12:24:31.013293] ✅ SUCCESS: Logged Charbel
+[2026-05-07 12:24:39.219179] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:24:54.904496] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:25:15.755906] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:25:37.586663] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:25:58.974642] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:26:41.087146] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:39:32.655575] ✅ SUCCESS: Logged Charbel
+[2026-05-07 12:39:40.835893] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:39:57.453587] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:40:45.978334] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 12:41:05.340501] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 14:38:31.950808] ✅ SUCCESS: Logged Charbel
+[2026-05-07 14:38:37.806069] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 14:45:01.313021] ✅ SUCCESS: Logged Charbel
+[2026-05-07 14:45:14.096132] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 14:45:44.516405] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 14:46:02.551566] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-07 14:46:21.159122] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 18:17:51.440181] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:18:09.862825] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:23:29.417174] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:23:40.037135] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:23:54.377131] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:24:17.150234] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:24:39.049993] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:24:56.987628] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:25:22.633641] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:25:30.030719] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:25:30.031504] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:42:33.671500] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:42:35.012650] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:48:46.565269] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:49:07.663569] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 18:49:07.664280] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 19:02:34.118281] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 19:02:45.013986] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 19:02:58.887163] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 19:03:29.387946] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 19:03:39.520931] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 19:03:39.521843] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-08 19:11:41.507648] ✅ SUCCESS: Logged Charbel
+[2026-05-08 19:11:54.056134] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:12:14.172687] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:12:34.536200] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:12:49.099165] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:19:21.818407] ✅ SUCCESS: Logged Charbel
+[2026-05-08 19:19:33.433659] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:20:00.112069] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:20:28.235077] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:20:50.989063] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:26:16.472293] ✅ SUCCESS: Logged Charbel
+[2026-05-08 19:26:17.599382] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:26:35.824886] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:26:55.239776] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 19:38:13.482655] ✅ SUCCESS: Logged Kevin
+[2026-05-08 19:38:24.075737] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:38:51.964276] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:40:28.203776] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:49:10.377257] ✅ SUCCESS: Logged Kevin
+[2026-05-08 19:49:12.120488] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:49:38.231539] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:50:36.129397] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:50:52.592402] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:51:07.808036] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:51:24.450743] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:51:54.584347] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 19:52:18.431907] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 20:01:17.057342] ✅ SUCCESS: Logged Charbel
+[2026-05-08 20:01:41.219789] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 20:02:01.324242] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 20:15:30.303538] ✅ SUCCESS: Logged Kevin
+[2026-05-08 20:15:41.099495] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 20:16:03.822883] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-08 20:49:52.167530] ✅ SUCCESS: Logged Charbel
+[2026-05-08 20:55:47.177699] ✅ SUCCESS: Logged Charbel
+[2026-05-08 20:55:57.720860] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 20:56:20.302359] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 20:56:47.251367] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-08 20:57:10.776374] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 19:40:22.939536] ✅ SUCCESS: Logged Kevin
+[2026-05-15 19:40:24.313786] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-15 19:40:44.240583] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-15 19:41:06.468607] ✅ Q&A SAVED: Kevin asked a question.
+[2026-05-15 20:08:31.475278] ✅ SUCCESS: Logged Charbel
+[2026-05-15 20:08:41.484367] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:08:56.436202] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:09:18.163152] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:41:49.517602] ✅ SUCCESS: Logged Charbel
+[2026-05-15 20:42:01.803211] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:42:17.186551] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:42:37.628042] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:42:58.414332] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:43:06.323552] ❌ QUIZ GEN ERROR: Expecting ',' delimiter: line 12 column 4 (char 309)
+[2026-05-15 20:55:07.420139] ✅ SUCCESS: Logged Charbel
+[2026-05-15 20:55:19.791257] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:55:43.020675] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-15 20:56:03.771460] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 17:37:46.592957] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 17:37:54.524975] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 17:38:07.878373] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 17:38:50.001397] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 17:38:57.643118] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 17:38:57.643783] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 18:22:16.365554] ❌ ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 18:22:31.188144] ❌ Q&A DB ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 18:22:31.188920] ❌ QUIZ GEN ERROR: 2003 (HY000): Can't connect to MySQL server on 'localhost:3303' (61)
+[2026-05-20 18:33:35.071996] ✅ SUCCESS: Logged Charbel
+[2026-05-20 18:33:47.843299] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 18:34:09.401059] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 18:34:33.865098] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 18:34:55.580440] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 18:35:14.936190] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 19:16:12.542643] ✅ SUCCESS: Logged Charbel
+[2026-05-20 19:16:25.118990] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 19:16:53.926374] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 19:17:09.903894] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 19:17:31.617231] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 19:27:08.397266] ✅ SUCCESS: Logged Charbel
+[2026-05-20 19:27:21.286233] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 19:27:44.527945] ✅ Q&A SAVED: Charbel asked a question.
+[2026-05-20 19:28:07.254460] ✅ Q&A SAVED: Charbel asked a question.
