@@ -1,7 +1,7 @@
 # Pepper-azzi – AI Teaching Assistant Robot
 
 
-## Video's link: 
+## Video's link: [https://drive.google.com/file/d/1BoHvUr8O08n0j1CSx7r-svRK2M9_huwD/view?usp=drivesdk]
 
 ## Project Overview
 Pepper-azzi is an interactive Human-Robot Interaction (HRI) project developed using the Pepper humanoid robot as an AI teaching assistant in a classroom environment at USEK.
