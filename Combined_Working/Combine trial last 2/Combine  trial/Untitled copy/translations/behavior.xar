@@ -1,0 +1,909 @@
+<?xml version="1.0" encoding="UTF-8" ?><ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3"><Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0"><bitmap>media/images/box/root.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Timeline enable="0"><BehaviorLayer name="behavior_layer1"><BehaviorKeyframe name="keyframe1" index="1"><Diagram scale="84.0896"><Box name="Greetings" id="2" localization="8" tooltip="" x="276" y="96"><dialogFile>../Greetings/Greetings.dlg</dialogFile><bitmap>media/images/box/box-dialog.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Python Script" id="1" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="140" y="68"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[from naoqi import ALProxy
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        self.tts = None
+        self.dialog = None
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        try:
+            self.tts = self.session().service("ALTextToSpeech")
+            self.tts.setParameter("speed", 115)
+            # self.tts.setParameter("pitchShift", 1.2)
+        except Exception as e:
+            self.logger.error("TTS error: " + str(e))
+
+        try:
+            self.dialog = self.session().service("ALDialog")
+            self.dialog.setASRConfidenceThreshold(0.3)
+        except Exception as e:
+            self.logger.error("ALDialog error: " + str(e))
+
+        self.onStopped()
+
+    def onInput_onStop(self):
+        self.onUnload()
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="photo transfo" id="3" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="732" y="186"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import time
+import json
+import base64
+import urllib2
+import threading
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.is_running = False
+        self.go_to_next = False
+
+        # IP is read from laptop_ip.txt (written by combine.py on startup).
+        # Falls back to a sentinel IP if the file is missing.
+        laptop_ip = "10.10.42.180"
+        try:
+            import os
+            here = os.path.dirname(os.path.abspath(__file__))
+            for candidate in (
+                os.path.join(here, "laptop_ip.txt"),
+                os.path.join(here, "..", "laptop_ip.txt"),
+            ):
+                if os.path.isfile(candidate):
+                    f = open(candidate, "r")
+                    try:
+                        laptop_ip = f.read().strip() or laptop_ip
+                    finally:
+                        f.close()
+                    break
+        except Exception:
+            pass
+
+        self.BACKEND_BASE = "http://" + laptop_ip + ":5000"
+        self.BACKEND_URL = self.BACKEND_BASE + "/edit_json"
+        self.CHOICE_PAGE_URL = self.BACKEND_BASE + "/choice"
+        self.RESULT_OPTIONS_URL = self.BACKEND_BASE + "/result_options"
+        self.GET_CHOICE_URL = self.BACKEND_BASE + "/get_choice"
+        self.RESET_CHOICE_URL = self.BACKEND_BASE + "/reset_choice"
+        self.LOADING_PAGE_URL = self.BACKEND_BASE + "/loading"
+
+        self.PHOTO_FOLDER = "/home/nao/recordings/cameras"
+        self.PHOTO_NAME = "pepper_capture"
+
+        self.TAKE_PICTURE_ANIM = "animations/Stand/Waiting/TakePicture_1"
+        self.TAKE_LAUGH = "animations/Stand/Emotions/Positive/Laugh_2"
+
+    def onLoad(self):
+        self.memory = self.session().service("ALMemory")
+        self.tts = self.session().service("ALTextToSpeech")
+        self.tablet = self.session().service("ALTabletService")
+        self.photo = self.session().service("ALPhotoCapture")
+        self.animation_player = self.session().service("ALAnimationPlayer")
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        if self.is_running:
+            self.logger.warning("Workflow already running.")
+            return
+
+        self.is_running = True
+        self.go_to_next = False
+        self.logger.info("Photo Workflow started via cable!")
+        self.tts.setParameter("speed", 100)
+        self.tts.setParameter("pitchShift", 1.2)
+
+        try:
+            self.run_workflow()
+        except Exception as e:
+            self.logger.error("Workflow error: " + repr(e))
+            try:
+                self.tts.say("Sorry, something went wrong.")
+            except:
+                pass
+            self.go_to_next = True
+        finally:
+            self.is_running = False
+            if self.go_to_next:
+                self.onStopped() # Fires the cable to the next box!
+
+    def onInput_onStop(self):
+        self.is_running = False
+        self.onStopped()
+
+    def say_and_log(self, msg):
+        self.logger.info(str(msg))
+        try:
+            self.tts.say(str(msg))
+        except Exception as e:
+            self.logger.warning("TTS failed: " + str(e))
+
+    def http_get_json(self, url, timeout=20):
+        self.logger.info("GET " + url)
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req, timeout=timeout)
+        data = response.read()
+        return json.loads(data)
+
+    def http_post_json(self, url, payload, timeout=20):
+        body = json.dumps(payload)
+        self.logger.info("POST " + url + " payload=" + str(payload))
+        req = urllib2.Request(url, body)
+        req.add_header("Content-Type", "application/json")
+        response = urllib2.urlopen(req, timeout=timeout)
+        data = response.read()
+        return json.loads(data)
+
+    def normalize_choice(self, raw_choice):
+        if raw_choice is None: return None
+        c = str(raw_choice).strip().lower().replace(" ", "_").replace("-", "_")
+        mapping = {
+            "sunglasses": "sunglasses", "glasses": "sunglasses",
+            "hat": "hat", "funny_hair": "funny_hair",
+            "funnyhair": "funny_hair", "hair": "funny_hair",
+            "cartoon": "cartoon", "retry": "retry", "next": "next"
+        }
+        return mapping.get(c, None)
+
+    def reset_choice(self):
+        try:
+            self.http_post_json(self.RESET_CHOICE_URL, {}, timeout=10)
+        except Exception as e: pass
+
+    def wait_for_choice(self, max_wait=60):
+        start_time = time.time()
+        while time.time() - start_time < max_wait:
+            try:
+                parsed = self.http_get_json(self.GET_CHOICE_URL, timeout=10)
+                raw_choice = parsed.get("choice", None)
+                choice = self.normalize_choice(raw_choice)
+                if choice is not None:
+                    return choice
+            except Exception as e: pass
+            time.sleep(1.0)
+        raise Exception("No valid choice received from tablet")
+
+    def play_take_picture_animation_async(self):
+        def _run_anim():
+            try: self.logger.info("Starting take picture animation")
+            except Exception as e: pass
+        t = threading.Thread(target=_run_anim)
+        t.daemon = True
+        t.start()
+
+    def run_workflow(self):
+        self.reset_choice()
+
+        try: self.tablet.hideImage(); time.sleep(0.2)
+        except: pass
+        try: self.tablet.hideWebview(); time.sleep(0.2)
+        except: pass
+
+        self.say_and_log("Okay! Enough serious business. "
+                        "Now it's time for something fun! "
+                        "Let’s try some super funny filters and make you look absolutely legendary!"
+)
+        self.tablet.showWebview(str(self.CHOICE_PAGE_URL))
+
+        choice = self.wait_for_choice(max_wait=60)
+
+        if choice == "sunglasses": self.say_and_log("Great. You chose sunglasses.")
+        elif choice == "hat": self.say_and_log("Great. You chose a hat.")
+        elif choice == "funny_hair": self.say_and_log("Great. You chose funny hair.")
+        elif choice == "cartoon": self.say_and_log("Great. You chose cartoon style.")
+
+        time.sleep(1.0)
+        self.say_and_log("Look at the camera on my forehead and smile.")
+        time.sleep(1.0)
+        self.say_and_log("Three")
+        time.sleep(0.6)
+        self.say_and_log("Two")
+        time.sleep(0.6)
+        self.say_and_log("One")
+        time.sleep(0.4)
+
+        self.animation_player.run(self.TAKE_PICTURE_ANIM)
+        image_bytes = self.capture_with_photo_capture()
+
+        self.say_and_log("Perfect. Now I am creating your new image.")
+
+        try: self.tablet.hideWebview(); time.sleep(0.2)
+        except: pass
+        try: self.tablet.hideImage(); time.sleep(0.2)
+        except: pass
+
+        self.tablet.showWebview(str(self.LOADING_PAGE_URL))
+        time.sleep(0.5)
+
+        result_url = self.send_json_to_backend(image_bytes, choice)
+
+        try: self.tablet.hideWebview(); time.sleep(0.2)
+        except: pass
+        try: self.tablet.hideImage(); time.sleep(0.2)
+        except: pass
+
+        self.tablet.showImage(str(result_url))
+        self.say_and_log("Here is your result.")
+        time.sleep(7.0)
+
+        try: self.animation_player.run(self.TAKE_LAUGH)
+        except Exception: pass
+
+        self.reset_choice()
+
+        try: self.tablet.hideImage(); time.sleep(0.2)
+        except: pass
+
+        self.say_and_log("Would you like to try again, or continue?")
+        self.tablet.showWebview(str(self.RESULT_OPTIONS_URL))
+
+        next_choice = self.wait_for_choice(max_wait=60)
+
+        if next_choice == "retry":
+            self.say_and_log("Great. Let's try again.")
+            self.run_workflow()
+            return
+
+        if next_choice == "next":
+            self.say_and_log("Perfect. Moving to the next part.")
+            self.go_to_next = True
+            return
+
+        self.go_to_next = True
+
+    def capture_with_photo_capture(self):
+        self.photo.setCameraID(0)
+        self.photo.setResolution(1)
+        self.photo.setPictureFormat("jpg")
+
+        self.play_take_picture_animation_async()
+        time.sleep(0.2)
+
+        result = self.photo.takePicture(self.PHOTO_FOLDER, self.PHOTO_NAME)
+
+        if isinstance(result, list) and len(result) >= 2:
+            full_path = str(result[0]).rstrip("/\\") + "/" + str(result[1])
+        elif isinstance(result, list) and len(result) == 1:
+            filename = str(result[0])
+            if filename.startswith("/"): full_path = filename
+            else: full_path = self.PHOTO_FOLDER.rstrip("/\\") + "/" + filename
+        else:
+            raise Exception("Unexpected takePicture result")
+
+        f = open(full_path, "rb")
+        image_bytes = f.read()
+        f.close()
+
+        return image_bytes
+
+    def send_json_to_backend(self, image_bytes, choice):
+        image_b64 = base64.b64encode(image_bytes)
+        payload = {"choice": str(choice), "image_b64": str(image_b64)}
+        parsed = self.http_post_json(self.BACKEND_URL, payload, timeout=180)
+
+        if not parsed.get("ok"):
+            raise Exception(parsed.get("error", "Unknown backend error"))
+        return parsed["result_url"]]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Input name="output_1" type="1" type_size="1" nature="1" inner="0" tooltip="" id="4" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="5" /></Box><Box name="Q&amp;A" id="6" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="414" y="118"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import socket
+import threading
+import time
+import StringIO
+import os
+from PIL import Image
+from naoqi import ALProxy
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        self.port = 12344
+        self.video_port = 12348
+        self.depth_port = 12350
+        self.text_port = 12349
+        self.sensor_port = 12351
+        # IP is read from laptop_ip.txt (written by combine.py on startup).
+        mac_ip = "10.10.42.180"
+        try:
+            import os
+            here = os.path.dirname(os.path.abspath(__file__))
+            for candidate in (
+                os.path.join(here, "laptop_ip.txt"),
+                os.path.join(here, "..", "laptop_ip.txt"),
+            ):
+                if os.path.isfile(candidate):
+                    f = open(candidate, "r")
+                    try:
+                        mac_ip = f.read().strip() or mac_ip
+                    finally:
+                        f.close()
+                    break
+        except Exception:
+            pass
+        self.mac_ip = mac_ip
+        self.sock = None
+        self.is_running = False
+        self.topic_name = None
+        self.is_speaking = False
+
+    def onLoad(self):
+        self.logger.info("Gemini Box loaded")
+        self.memory = ALProxy("ALMemory")
+
+    def onUnload(self):
+        self.is_running = False
+        self.logger.info("Stopping all services and cleaning up...")
+
+        try:
+            self.sonar.unsubscribe(self.sonar_id)
+        except Exception: pass
+
+        try:
+            if hasattr(self, 'laser'):
+                self.laser.laserOff()
+        except: pass
+
+        if hasattr(self, 'topic_name') and self.topic_name:
+            try:
+                self.dialog.unsubscribe("GeminiBridge")
+                self.dialog.deactivateTopic(self.topic_name)
+                self.dialog.unloadTopic(self.topic_name)
+            except: pass
+
+        if hasattr(self, 'sock') and self.sock:
+            try:
+                self.sock.shutdown(socket.SHUT_RDWR)
+                self.sock.close()
+            except: pass
+
+        try:
+            if hasattr(self, 'tracker'):
+                self.tracker.stopTracker()
+                self.tracker.unregisterAllTargets()
+
+            ALProxy("ALBasicAwareness").resumeAwareness()
+            ALProxy("ALBackgroundMovement").setEnabled(True)
+        except Exception: pass
+
+    def onInput_onStart(self):
+        if self.is_running: return
+        self.is_running = True
+
+        try:
+            self.tablet = ALProxy("ALTabletService")
+            # Ensure the tablet is pointing to our new chat file
+            self.tablet.showWebview("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/pages/chat.html")
+        except Exception as e:
+            self.logger.info("Tablet init failed: " + str(e))
+
+        try:
+            self.motion = ALProxy("ALMotion")
+            self.tts = ALProxy("ALTextToSpeech")
+            self.posture = ALProxy("ALRobotPosture")
+            self.video_service = ALProxy("ALVideoDevice")
+            self.dialog = ALProxy("ALDialog")
+            self.life = ALProxy("ALAutonomousLife")
+            self.asr = ALProxy("ALSpeechRecognition")
+            self.tracker = ALProxy("ALTracker")
+            self.anim_tts = ALProxy("ALAnimatedSpeech")
+
+            self.sonar = ALProxy("ALSonar")
+            self.sonar_id = "MacMapper_" + str(int(time.time()))
+            self.sonar.subscribe(self.sonar_id)
+
+            try:
+                self.laser = ALProxy("ALLaser")
+                self.laser.laserOn()
+            except Exception: pass
+
+            try:
+                self.tts.setParameter("pitchShift", 1.2) # 1.0 is default pitch
+                self.tts.setParameter("speed", 100)      # 100 is default speed
+            except Exception:
+                pass
+
+            self.setup_dialog_engine()
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.sock.bind(("0.0.0.0", self.port))
+            self.sock.listen(5)
+            self.sock.settimeout(1.0)
+
+            self.cmd_worker = threading.Thread(target=self.receive_loop)
+            self.cmd_worker.daemon = True
+            self.cmd_worker.start()
+
+            self.rgb_worker = threading.Thread(target=self.stream_rgb_loop)
+            self.rgb_worker.daemon = True
+            self.rgb_worker.start()
+
+            self.depth_worker = threading.Thread(target=self.stream_depth_loop)
+            self.depth_worker.daemon = True
+            self.depth_worker.start()
+
+            self.sensor_worker = threading.Thread(target=self.stream_sensors_loop)
+            self.sensor_worker.daemon = True
+            self.sensor_worker.start()
+
+            self.stt_worker = threading.Thread(target=self.speech_to_text_loop)
+            self.stt_worker.daemon = True
+            self.stt_worker.start()
+
+        except Exception as e:
+            self.logger.error("Startup Failure: " + str(e))
+
+    def setup_dialog_engine(self):
+        topic_content = "topic: ~geminilisten()\nlanguage: enu\nu: (_*) $GeminiInput=$1\n"
+        topic_path = "/home/nao/geminilisten.top"
+        with open(topic_path, "w") as f:
+            f.write(topic_content)
+
+        self.dialog.setLanguage("English")
+        self.topic_name = self.dialog.loadTopic(topic_path)
+        self.dialog.activateTopic(self.topic_name)
+        self.dialog.subscribe("GeminiBridge")
+
+    def speech_to_text_loop(self):
+        text_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            text_sock.connect((self.mac_ip, self.text_port))
+            last_sent_text = ""
+            while self.is_running:
+                if self.is_speaking:
+                    time.sleep(0.5)
+                    continue
+
+                try:
+                    dialog_data = self.memory.getData("GeminiInput")
+                    if dialog_data and isinstance(dialog_data, str) and len(dialog_data) > 2:
+                        current_dialog = dialog_data.replace("<...>", "").strip()
+                        if current_dialog != last_sent_text:
+                            text_sock.sendall(current_dialog.encode('utf-8'))
+                            last_sent_text = current_dialog
+                            self.memory.insertData("GeminiInput", "")
+                            time.sleep(1.0)
+                except Exception: pass
+                time.sleep(0.2)
+        except Exception: pass
+
+    def stream_rgb_loop(self):
+        rgb_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        rgb_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        sub_id = None
+        try:
+            rgb_sock.connect((self.mac_ip, self.video_port))
+            unique_name = "RGBStream_" + str(int(time.time()))
+            sub_id = self.video_service.subscribeCamera(unique_name, 0, 3, 11, 20)
+
+            while self.is_running:
+                al_image = self.video_service.getImageRemote(sub_id)
+                if al_image:
+                    width = al_image[0]
+                    height = al_image[1]
+                    raw_data = al_image[6]
+                    try:
+                        im = Image.frombytes("RGB", (width, height), raw_data)
+                        buf = StringIO.StringIO()
+                        im.save(buf, format="JPEG", quality=60)
+                        jpeg_data = buf.getvalue()
+                        rgb_sock.sendall(str(len(jpeg_data)).ljust(16))
+                        rgb_sock.sendall(jpeg_data)
+                        buf.close()
+                    except Exception: pass
+                time.sleep(0.01)
+        except Exception: pass
+        finally:
+            if sub_id:
+                try: self.video_service.unsubscribe(sub_id)
+                except: pass
+            rgb_sock.close()
+
+    def stream_sensors_loop(self):
+        count = 0
+        sensor_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sensor_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
+        try:
+            sensor_sock.connect((self.mac_ip, self.sensor_port))
+
+            path_F = "Device/SubDeviceList/Platform/LaserSensor/Front/Horizontal/Seg%02d/X/Sensor/Value"
+            path_L = "Device/SubDeviceList/Platform/LaserSensor/Left/Horizontal/Seg%02d/X/Sensor/Value"
+            path_R = "Device/SubDeviceList/Platform/LaserSensor/Right/Horizontal/Seg%02d/X/Sensor/Value"
+
+            def get_keys(base_path):
+                return [[base_path % i for i in range(2, 6)], [base_path % i for i in range(6, 11)], [base_path % i for i in range(11, 15)]]
+            f_keys = get_keys(path_F)
+            l_keys = get_keys(path_L)
+            r_keys = get_keys(path_R)
+
+            while self.is_running:
+                try:
+                    f_s = self.memory.getData("Device/SubDeviceList/Platform/Front/Sonar/Sensor/Value")
+                    b_s = self.memory.getData("Device/SubDeviceList/Platform/Back/Sonar/Sensor/Value")
+                    l_i = self.memory.getData("Device/SubDeviceList/Platform/InfraredSpot/Left/Sensor/Value")
+                    r_i = self.memory.getData("Device/SubDeviceList/Platform/InfraredSpot/Right/Sensor/Value")
+
+                    def get_min_dist(keys):
+                        try:
+                            vals = self.memory.getListData(keys)
+                            clean_vals = [v for v in vals if isinstance(v, (int, float))]
+                            return min(clean_vals) if clean_vals else 5.0
+                        except: return 5.0
+
+                    f_z1 = get_min_dist(f_keys[0])
+                    f_z2 = get_min_dist(f_keys[1])
+                    f_z3 = get_min_dist(f_keys[2])
+                    l_z1 = get_min_dist(l_keys[0])
+                    l_z2 = get_min_dist(l_keys[1])
+                    l_z3 = get_min_dist(l_keys[2])
+                    r_z1 = get_min_dist(r_keys[0])
+                    r_z2 = get_min_dist(r_keys[1])
+                    r_z3 = get_min_dist(r_keys[2])
+
+                    count = (count + 1) % 100
+                    payload = "{:.2f},{:.2f},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{}".format(
+                        f_s, b_s, int(l_i), int(r_i), f_z1, f_z2, f_z3, l_z1, l_z2, l_z3, r_z1, r_z2, r_z3, count).ljust(256)
+                    sensor_sock.sendall(payload)
+                except Exception: pass
+                time.sleep(0.05)
+        except Exception: pass
+        finally:
+            sensor_sock.close()
+
+    def stream_depth_loop(self):
+        depth_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        depth_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        sub_id = None
+        try:
+            depth_sock.connect((self.mac_ip, self.depth_port))
+            unique_name = "DepthStream_" + str(int(time.time()))
+            sub_id = self.video_service.subscribeCamera(unique_name, 2, 2, 17, 20)
+
+            if not sub_id: return
+
+            while self.is_running:
+                al_image = self.video_service.getImageRemote(sub_id)
+                if al_image:
+                    width, height, raw_data = al_image[0], al_image[1], al_image[6]
+                    size = len(raw_data)
+                    header = "{},{},{}".format(width, height, size).ljust(32)
+                    depth_sock.sendall(header)
+                    depth_sock.sendall(raw_data)
+                time.sleep(0.01)
+        except Exception: pass
+        finally:
+            if sub_id:
+                try: self.video_service.unsubscribe(sub_id)
+                except: pass
+            depth_sock.close()
+
+    def receive_loop(self):
+        while self.is_running:
+            try:
+                conn, addr = self.sock.accept()
+                data = conn.recv(4096)
+                if data:
+                    msg = data.decode('utf-8', 'ignore')
+                    self.process_command(msg)
+                conn.close()
+            except socket.timeout: continue
+            except Exception: pass
+            time.sleep(0.1)
+
+    def process_command(self, msg):
+        self.logger.info(">>> NEW COMMAND RECEIVED: " + str(msg))
+        self.is_speaking = True
+
+        try:
+            self.asr.pause(True)
+            self.dialog.deactivateTopic(self.topic_name)
+
+            if isinstance(msg, unicode): msg = msg.encode('utf-8', 'ignore')
+            clean_msg = "".join([i if ord(i) < 128 else ' ' for i in msg]).strip()
+            if not clean_msg: return
+
+            if "show_t:" in clean_msg:
+                try:
+                    # split(':', 2) ensures we get [prefix, sender, message]
+                    parts = clean_msg.split(':', 2)
+                    if len(parts) >= 3:
+                        sender = parts[1]
+                        content = parts[2]
+                        # Clean single quotes to prevent JavaScript syntax errors
+                        safe_content = content.replace("'", "\\'")
+                        js_cmd = "displayChat('{}', '{}');".format(sender, safe_content)
+                        self.tablet.executeJS(js_cmd)
+                except Exception as e:
+                    self.logger.info("Tablet display error: " + str(e))
+            elif clean_msg == "start_quiz":
+                self.motion.stopMove()
+                self.onInput_onStop()
+                return
+
+            elif "navto_" in clean_msg:
+                parts = clean_msg.split('_')
+                target_x, target_y = float(parts[1]), float(parts[2])
+
+                # ---> FIX 1: Make speech ASYNC so the loop doesn't queue!
+                self.tts.say("Coming to you.", _async=True)
+                self.motion.setExternalCollisionProtectionEnabled("All", True)
+
+                try:
+                    try:
+                        ALProxy("ALBasicAwareness").pauseAwareness()
+                        ALProxy("ALBackgroundMovement").setEnabled(False)
+                    except Exception: pass
+
+                    self.motion.setAngles(["HeadYaw", "HeadPitch"], [0.0, -0.2], 0.2)
+                    time.sleep(0.3)
+                    self.tracker.setMode("Head")
+                    self.tracker.registerTarget("Face", 0.15)
+                    self.tracker.track("Face")
+                    self.tracker.toggleSearch(False)
+                except Exception: pass
+
+                def execute_safe_move():
+                    try: self.motion.moveTo(target_x, target_y, 0.0)
+                    except Exception: pass
+                threading.Thread(target=execute_safe_move).start()
+
+            elif clean_msg == "stop":
+                self.motion.stopMove()
+                # ---> FIX 2: Make speech ASYNC!
+                self.tts.say("Excuse me! Stopping now.", _async=True)
+
+                try:
+                    self.tracker.stopTracker()
+                    self.tracker.unregisterAllTargets()
+                    try:
+                        ALProxy("ALBasicAwareness").resumeAwareness()
+                        ALProxy("ALBackgroundMovement").setEnabled(True)
+                    except Exception: pass
+                    self.motion.setAngles(["HeadYaw", "HeadPitch"], [0.0, -0.15], 0.2)
+                except Exception: pass
+
+            elif clean_msg == "reset_search":
+                try:
+                    self.tracker.stopTracker()
+                    self.tracker.unregisterAllTargets()
+                    try:
+                        ALProxy("ALBasicAwareness").resumeAwareness()
+                        ALProxy("ALBackgroundMovement").setEnabled(True)
+                    except Exception: pass
+                    self.motion.setAngles(["HeadYaw", "HeadPitch"], [0.0, -0.15], 0.2)
+                except Exception: pass
+
+            elif "move_" in clean_msg:
+                self.motion.stopMove()
+                parts = clean_msg.split('_')
+                direction, val = parts[1], float(parts[2])
+                x = val if direction=="forward" else -val if direction=="backward" else 0
+                y = val if direction=="left" else -val if direction=="right" else 0
+
+                # ---> FIX 3: Make speech ASYNC!
+                self.tts.say("Moving " + str(direction), _async=True)
+                self.motion.post.moveTo(x, y, 0)
+
+            elif "high_five" in clean_msg:
+                self.motion.stopMove()
+                self.tts.say("High five! Slap my hand!", _async=True)
+                self.motion.setExternalCollisionProtectionEnabled("All", False)
+                self.motion.setAngles(["RShoulderPitch", "RShoulderRoll", "RElbowRoll", "RWristYaw", "RHand"], [-1.1, -0.6, 0.7, -1.0, 1.0], 0.2)
+                threading.Thread(target=self.wait_for_touch).start()
+
+            else:
+                self.motion.stopMove()
+                try: self.anim_tts.say(str(clean_msg))
+                except Exception: self.tts.say(str(clean_msg))
+
+        except Exception: pass
+        finally:
+            time.sleep(0.5)
+            if self.is_running:
+                self.memory.insertData("GeminiInput", "")
+                try:
+                    self.dialog.activateTopic(self.topic_name)
+                    self.asr.pause(False)
+                except: pass
+                self.is_speaking = False
+
+    def wait_for_touch(self):
+        touched = False
+        start_time = time.time()
+        while not touched and (time.time() - start_time < 10.0) and self.is_running:
+            if self.memory.getData("HandRightBackTouched") > 0.5 or self.memory.getData("HandRightLeftTouched") > 0.5:
+                touched = True
+            time.sleep(0.1)
+
+        if touched:
+            self.is_speaking = True
+            try:
+                self.asr.pause(True)
+                self.dialog.deactivateTopic(self.topic_name)
+            except: pass
+
+            self.tts.say("Nice one!")
+            time.sleep(0.8)
+
+            if self.is_running:
+                self.memory.insertData("GeminiInput", "")
+                try:
+                    self.dialog.activateTopic(self.topic_name)
+                    self.asr.pause(False)
+                except: pass
+
+            self.motion.closeHand("RHand")
+            time.sleep(0.7)
+            self.is_speaking = False
+
+        if self.is_running:
+            self.posture.goToPosture("Stand", 0.5)
+            self.motion.setExternalCollisionProtectionEnabled("All", True)
+
+    def onInput_onStop(self):
+        self.is_running = False
+        self.onUnload()
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Dynamic Questions" id="4" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="561" y="166"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import threading
+import time
+from naoqi import ALProxy
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        self.memory = None
+        self.tts = None
+        self.tablet = None
+        self.dialog = None
+        self.topic_name = None
+        self.subs = []
+
+    def onLoad(self):
+        self.memory = self.session().service("ALMemory")
+        self.tts = self.session().service("ALAnimatedSpeech")
+        self.tablet = self.session().service("ALTabletService")
+        self.dialog = self.session().service("ALDialog")
+        self.asr = self.session().service("ALSpeechRecognition")
+
+    def onUnload(self):
+        # Clean up subscriptions
+        for sub, conn in self.subs:
+            try: sub.signal.disconnect(conn)
+            except: pass
+        # Unload speech dialog topic
+        if self.topic_name:
+            try:
+                self.dialog.deactivateTopic(self.topic_name)
+                self.dialog.unloadTopic(self.topic_name)
+                self.topic_name = None
+            except: pass
+
+    def onInput_onStart(self):
+        # Setup speech recognition and subscribe to ALL events FIRST
+        # so no event is missed while the intro is playing
+        self._setup_speech_dialog()
+        self._subscribe("PepperSpeakQuestion", self.speak_question)
+        self._subscribe("answerCorrect", self.react_correct)
+        self._subscribe("answerWrong", self.react_wrong)
+        self._subscribe("quizScore", self.finish_quiz)
+
+        # Introduce the quiz (mic muted so Pepper doesn't hear itself)
+        try:
+            self.asr.pause(True)
+        except Exception: pass
+        try:
+            self.tts.say("^start(animations/Stand/Gestures/Enthusiastic_4) Welcome to the Pop Quiz! I will read each question out loud. Listen carefully and then tap your answer on the screen, or say first, second, or third. Let's begin! ^wait(animations/Stand/Gestures/Enthusiastic_4)")
+        except Exception as e:
+            self.logger.error("Intro speech error: " + str(e))
+        try:
+            self.asr.pause(False)
+        except Exception: pass
+
+        # Show the quiz page AFTER intro — the PepperSpeakQuestion event
+        # for question 1 will now be caught because we already subscribed above
+        try:
+            self.tablet.showWebview("http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/pages/confirmation.html")
+        except Exception as e:
+            self.logger.error("Tablet error: " + str(e))
+
+    def _setup_speech_dialog(self):
+        try:
+            topic_content = (
+                "topic: ~quizanswers()\n"
+                "language: enu\n"
+                "concept:(Option1) [first \"first one\" one 1]\n"
+                "concept:(Option2) [second \"second one\" two 2]\n"
+                "concept:(Option3) [third \"third one\" three 3]\n"
+                "u:(~Option1) $speechAnswer=1\n"
+                "u:(~Option2) $speechAnswer=2\n"
+                "u:(~Option3) $speechAnswer=3\n"
+            )
+            topic_path = "/home/nao/quizanswers.top"
+            with open(topic_path, "w") as f:
+                f.write(topic_content)
+
+            self.dialog.setLanguage("English")
+            self.topic_name = self.dialog.loadTopic(topic_path)
+            self.dialog.activateTopic(self.topic_name)
+            self.dialog.subscribe("QuizAnswers")
+            self.logger.info("Quiz speech dialog activated")
+        except Exception as e:
+            self.logger.error("Speech dialog setup error: " + str(e))
+
+    def _subscribe(self, event_name, callback):
+        sub = self.memory.subscriber(event_name)
+        conn = sub.signal.connect(callback)
+        self.subs.append((sub, conn))
+
+    def speak_question(self, text):
+        threading.Thread(target=self._speak_question, args=(text,)).start()
+
+    def _speak_question(self, text):
+        try: self.asr.pause(True)
+        except Exception: pass
+        self._speak(text, "animations/Stand/Gestures/Explain_1")
+        try: self.asr.pause(False)
+        except Exception: pass
+
+    def react_correct(self, val):
+        threading.Thread(target=self._react_correct_thread).start()
+
+    def _react_correct_thread(self):
+        try: self.asr.pause(True)
+        except Exception: pass
+        self._speak("^start(animations/Stand/Gestures/Yes_1) Correct! ^wait(animations/Stand/Gestures/Yes_1)")
+        try: self.asr.pause(False)
+        except Exception: pass
+
+    def react_wrong(self, val):
+        threading.Thread(target=self._react_wrong_thread).start()
+
+    def _react_wrong_thread(self):
+        try: self.asr.pause(True)
+        except Exception: pass
+        self._speak("^start(animations/Stand/Emotions/Negative/Disappointed_1) Not quite right. ^wait(animations/Stand/Emotions/Negative/Disappointed_1)")
+        try: self.asr.pause(False)
+        except Exception: pass
+
+    def finish_quiz(self, score):
+        threading.Thread(target=self._finish, args=(score,)).start()
+
+    def _speak(self, text, anim=""):
+        try:
+            if anim and not "^start" in text:
+                self.tts.say("^start(" + anim + ") " + str(text) + " ^wait(" + anim + ")")
+            else:
+                self.tts.say(str(text))
+        except Exception as e:
+            self.logger.error("Speech error: " + str(e))
+
+    def _finish(self, score):
+        # Wait for the last correct/wrong reaction to finish
+        time.sleep(5)
+
+        # Show the score on the tablet FIRST
+        try:
+            score_url = "http://198.18.0.1/apps/.lastUploadedChoregrapheBehavior/pages/displayinfo.html?pageHeading=Quiz%20Complete&pageText=" + str(score) + "/5"
+            self.tablet.showWebview(score_url)
+        except Exception as e:
+            self.logger.error("Tablet score display error: " + str(e))
+
+        # Then announce the final score (mic muted so Pepper doesn't hear itself)
+        try: self.asr.pause(True)
+        except Exception: pass
+        self._speak("The quiz is complete! You scored " + str(score) + " out of 5.", "animations/Stand/Emotions/Positive/Winner_1")
+        time.sleep(2)
+
+        time.sleep(5)
+
+        # Unload speech dialog before moving on
+        try:
+            self.dialog.unsubscribe("QuizAnswers")
+        except: pass
+
+        self.onStopped()
+
+    def onInput_onStop(self):
+        self.onUnload()
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Link inputowner="2" indexofinput="2" outputowner="1" indexofoutput="4" /><Link inputowner="6" indexofinput="2" outputowner="2" indexofoutput="4" /><Link inputowner="4" indexofinput="2" outputowner="6" indexofoutput="4" /><Link inputowner="3" indexofinput="2" outputowner="4" indexofoutput="4" /><Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" /><Link inputowner="0" indexofinput="4" outputowner="3" indexofoutput="5" /></Diagram></BehaviorKeyframe></BehaviorLayer></Timeline></Box></ChoregrapheProject>

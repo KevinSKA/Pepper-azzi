@@ -1,0 +1,45 @@
+body {
+  background-color: #1a1a1a;
+  color: white;
+  font-family: sans-serif;
+  overflow: hidden;
+  margin: 0;
+}
+
+#chat-box {
+  height: 100vh;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  padding: 30px 20px 30px 20px;
+  overflow-y: auto;
+}
+
+.msg {
+  margin: 10px;
+  padding: 15px;
+  border-radius: 15px;
+  font-size: 24px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.student {
+  background-color: #333;
+  align-self: flex-start;
+  border-left: 5px solid #00ffcc;
+}
+
+.pepper {
+  background-color: #444;
+  align-self: flex-end;
+  border-right: 5px solid #ffd700;
+  text-align: right;
+}
+
+.name {
+  font-size: 14px;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 5px;
+}

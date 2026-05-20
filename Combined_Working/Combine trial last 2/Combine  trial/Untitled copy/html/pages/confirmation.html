@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Interact with Pepper</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/w3.css" />
+    <link rel="stylesheet" type="text/css" href="../css/formatting.css" />
+    <link rel="stylesheet" href="../css/all.css" />
+    <link rel="stylesheet" href="../css/confirmation.css" />
+
+    <script src="/libs/qi/2/qi.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/qievents.js"></script>
+    <script src="../js/displayinfo.js"></script>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="quiz-content">
+        <div style="width: 100%" class="w3-center">
+          <hr class="quiz-divider" />
+          <h1 id="pageHeading" class="quiz-heading"></h1>
+          <hr class="quiz-divider" />
+          <p id="pageText" class="quiz-question"></p>
+          <hr class="quiz-divider" />
+          <div class="quiz-options">
+            <button
+              type="button"
+              id="option1"
+              onclick="selectAnswer('1')"
+              class="fa rate-button rounded-rect-btn brown-btn quiz-btn"
+            >
+              <span class="default-font" id="option1Text">1)</span>
+            </button>
+            <br />
+            <button
+              type="button"
+              id="option2"
+              onclick="selectAnswer('2')"
+              class="fa rate-button rounded-rect-btn brown-btn quiz-btn"
+            >
+              <span class="default-font" id="option2Text">2)</span>
+            </button>
+            <br />
+            <button
+              type="button"
+              id="option3"
+              onclick="selectAnswer('3')"
+              class="fa rate-button rounded-rect-btn brown-btn quiz-btn"
+            >
+              <span class="default-font" id="option3Text">3)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-footer">
+        <p>Powered by Pepper</p>
+      </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/confirmation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+
+h1 {
+  margin: 20px 0 10px 0;
+  font-size: 40px;
+}
+
+#pic {
+  width: 90%;
+  height: 75%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid white;
+}

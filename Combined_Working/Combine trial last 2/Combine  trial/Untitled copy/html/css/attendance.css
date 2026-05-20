@@ -1,0 +1,163 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background: url("../images/at.jpeg") center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+  width: 92%;
+  max-width: 900px;
+}
+
+h1 {
+  font-size: 42px;
+  margin-bottom: 18px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.loading {
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.error {
+  font-size: 22px;
+  color: rgb(255, 220, 220);
+  font-weight: bold;
+  background: rgba(150, 0, 0, 0.5);
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 12px;
+}
+
+.message {
+  margin-top: 8px;
+  margin-bottom: 14px;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.students-box {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.student-list {
+  max-height: 220px;
+  overflow-y: auto;
+  text-align: left;
+  padding-right: 6px;
+}
+
+.student-item {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.student-item:last-child {
+  border-bottom: none;
+}
+
+.action-buttons {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.back-btn,
+.email-btn,
+.confirm-btn,
+.cancel-btn {
+  width: 200px;
+  height: 54px;
+  font-size: 20px;
+  border-radius: 14px;
+  border: none;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.92);
+  color: black;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:active,
+.email-btn:active,
+.confirm-btn:active,
+.cancel-btn:active {
+  transform: scale(0.97);
+}
+
+.status-msg {
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  min-height: 26px;
+}
+
+.password-screen {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 24px 18px;
+  border-radius: 20px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
+}
+
+.password-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.password-screen input {
+  width: 100%;
+  max-width: 320px;
+  height: 52px;
+  font-size: 22px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.password-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}

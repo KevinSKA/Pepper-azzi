@@ -1,0 +1,93 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background: url("../images/AttSurv.png") center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  overflow: hidden;
+}
+
+body.attendance-bg {
+  background: url("../images/at.jpeg") center center / cover no-repeat;
+}
+
+.container {
+  text-align: center;
+  width: 92%;
+  max-width: 900px;
+}
+
+h1 {
+  font-size: 42px;
+  margin-bottom: 18px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+button {
+  width: 240px;
+  height: 120px;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  margin-inline: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  color: black;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 1);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.note {
+  margin-top: 30px;
+  font-size: 20px;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+
+.next-btn {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 150px;
+  height: 60px;
+  font-size: 24px;
+  font-weight: bold;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.92);
+  color: black;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+.next-btn:active {
+  transform: scale(0.97);
+}

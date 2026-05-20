@@ -1,0 +1,56 @@
+[
+    {
+        "heading": "Question 1",
+        "text": "What is AI's role in cars, according to Charbel?",
+        "options": [
+            "1) Make them more stylish.",
+            "2) Make them safer and smarter.",
+            "3) Power their entertainment systems."
+        ],
+        "correct": "2",
+        "eventPrefix": "answer"
+    },
+    {
+        "heading": "Question 2",
+        "text": "How will AI influence fashion?",
+        "options": [
+            "1) Only with manufacturing.",
+            "2) In design and trend forecasting.",
+            "3) By replacing all designers."
+        ],
+        "correct": "2",
+        "eventPrefix": "answer2"
+    },
+    {
+        "heading": "Question 3",
+        "text": "Will AI replace universities entirely?",
+        "options": [
+            "1) Yes, it will automate all tasks.",
+            "2) No, human elements are key.",
+            "3) Only for online courses."
+        ],
+        "correct": "2",
+        "eventPrefix": "answer3"
+    },
+    {
+        "heading": "Question 4",
+        "text": "Will AI completely replace humans?",
+        "options": [
+            "1) Yes, for all jobs.",
+            "2) No, it will augment humans.",
+            "3) Only for creative roles."
+        ],
+        "correct": "2",
+        "eventPrefix": "answer4"
+    },
+    {
+        "heading": "Question 5",
+        "text": "What is a general benefit of AI?",
+        "options": [
+            "1) Creating new human emotions.",
+            "2) Making systems smarter and efficient.",
+            "3) Replacing all physical labor."
+        ],
+        "correct": "2"
+    }
+]

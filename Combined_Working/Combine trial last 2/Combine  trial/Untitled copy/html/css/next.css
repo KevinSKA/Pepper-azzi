@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: url("../images/Thankyou.png") center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.overlay {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.28);
+  padding: 24px 30px;
+  border-radius: 20px;
+}
+
+.message {
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}

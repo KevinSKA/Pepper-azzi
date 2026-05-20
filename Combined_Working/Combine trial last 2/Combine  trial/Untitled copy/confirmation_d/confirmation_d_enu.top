@@ -1,0 +1,24 @@
+topic: ~confirmation_d()
+language: enu
+include: lexicon_enu.top
+concept:(Option1) {First "first one" One}
+concept:(Option2) {Second "second one" two}
+concept:(Option3) {third "third one" Three}
+
+
+# General proposals
+proposal: %answerCorrect ~joyful That is correct!
+proposal: %answerWrong ~neutral That is not correct.
+proposal: %quizDone ~joyful That was the last question. Let's see how you did!
+
+# Events from tablet
+u:(e:answerCorrect) ^gotoReactivate(answerCorrect)
+u:(e:answerWrong) ^gotoReactivate(answerWrong)
+
+u:(e:quizScore) $userAnswer=1 $onStopped=1
+
+
+# Speech Answers
+u:(~Option1) $speechAnswer=1
+u:(~Option2) $speechAnswer=2
+u:(~Option3) $speechAnswer=3
